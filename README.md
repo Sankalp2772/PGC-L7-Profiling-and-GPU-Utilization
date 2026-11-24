@@ -153,25 +153,37 @@ Arithmetic intensity (AI) is FLOPs divided by bytes moved. Compare AI with the G
 
 These are lab-manual estimates. Actual classification depends on the GPU and workload size. The analyzer's kernel-name label is only a heuristic; use arithmetic intensity and hardware specifications for the report.
 
-## Results
+## Experimental results (user-provided lab observations)
 
-Record your actual run values here after execution. Do not substitute the reference values below for measured results.
+The following values were supplied for the lab observation record. They are preserved as provided and have not been independently re-measured or verified from the local trace files in this repository.
 
-| Metric | Baseline | Optimized |
+| Measurement | Baseline | Optimized |
 |---|---:|---:|
-| GPU model | Pending | Pending |
-| Total time (s) | Pending | Pending |
-| Time per batch (ms) | Pending | Pending |
-| Throughput (batches/s) | Pending | Pending |
-| Average `nvidia-smi` GPU utilization (%) | Pending | Pending |
-| Analyzer kernel busy / window (%) | Pending | Pending |
-| Idle gaps > 50 µs (count / ms) | Pending | Pending |
-| Copy overlapped with kernels (ms) | Pending | Pending |
-| Checksum | Pending | Pending |
+| GPU utilization | 17.2% | 38.1% |
+| Kernel busy time | 6.53 ms | 6.57 ms |
+| Copy busy time | 25.20 ms | 12.57 ms |
+| Copy/kernel overlap | 0.00 ms | 5.26 ms |
+| Idle gaps | 9 | 9 |
+| Total idle-gap time | 24.96 ms | 4.60 ms |
+| Profiled window | 37.92 ms | 17.22 ms |
 
-### Lab-manual reference results (not this machine's measurements)
+### Derived comparison
 
-The manual's illustrative mid-range GPU example reports 4.76 s baseline, 2.62 s optimized, and approximately 1.82x speedup. It shows utilization rising from about 55% to 96% in the `nvidia-smi` sample and kernel-busy/window rising from 52% to 94%. Your RTX 2050 results will differ.
+| Derived metric | Result |
+|---|---:|
+| Profiled-window speedup (37.92 / 17.22) | 2.20x (approximately 2.22x as reported) |
+| GPU utilization change | +20.9 percentage points |
+| Copy busy-time reduction | 50.1% |
+| Idle-gap-time reduction | 81.6% |
+
+**Calculation note:** Using the supplied window values, 37.92 / 17.22 = 2.20x, not 2.22x. Using the supplied idle-gap values, (24.96 - 4.60) / 24.96 = 81.6%, not 79.7%. The table preserves the raw observations; derived percentages are recalculated here to keep the arithmetic consistent.
+
+### Observation
+
+Baseline execution with pageable host memory and blocking transfers recorded 17.2% GPU utilization and no copy/kernel overlap. The optimized run using pinned host memory, CUDA streams, and asynchronous transfers recorded 38.1% GPU utilization and 5.26 ms of copy/kernel overlap. Copy busy time decreased from 25.20 ms to 12.57 ms, while kernel busy time remained nearly unchanged (6.53 ms versus 6.57 ms). Total idle-gap time decreased from 24.96 ms to 4.60 ms.
+
+These observations indicate that the optimization primarily improved transfer/computation scheduling and reduced GPU idle time, rather than reducing kernel execution time.
+
 
 ## Deliverables checklist
 
