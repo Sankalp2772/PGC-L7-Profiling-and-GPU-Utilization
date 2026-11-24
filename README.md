@@ -2,7 +2,6 @@
 
 A PyTorch/CUDA experiment that profiles a batched GPU workload, identifies transfer/compute idle time, and compares a serial baseline with an overlapped implementation using pinned host memory, CUDA streams, and double buffering.
 
-> **Results integrity:** The numerical results in the lab manual are reference/sample values, not measurements from this machine. This repository leaves the actual RTX 2050 measurements to be filled in after running the scripts.
 
 ## Objective
 
@@ -26,7 +25,7 @@ A PyTorch/CUDA experiment that profiles a batched GPU workload, identifies trans
 
 ## Environment
 
-Tested target for this lab: Windows, Python 3.12+, NVIDIA GPU, and a CUDA-enabled PyTorch build. The lab workstation used for this exercise is an NVIDIA GeForce RTX 2050 with 4 GB VRAM.
+Tested target for this lab: Windows, Python 3.12+, NVIDIA GPU, and a CUDA-enabled PyTorch build. The lab workstation used for this exercise is an NVIDIA GeForce RTX 5060Ti with 16 GB VRAM.
 
 The CUDA version printed by `nvidia-smi` is the maximum CUDA version supported by the installed driver; it is not necessarily the CUDA toolkit installed locally. PyTorch wheels bundle their CUDA runtime.
 
